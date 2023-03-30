@@ -147,59 +147,73 @@ document.addEventListener('keydown', event => {
 });
 
 function operate(history, currentNumber) {
-  resultCalculated = true;
-    if (currentNumber[0] == "/" && currentNumber[1] == 0) {
-      history.length = 0;
-      currentNumber.length = 0;
-      displayHistory.textContent = history;
-      display.textContent = "Error!";
-    } else {
-      let firstNumber = history[0] * 1;
-  
-      if (currentNumber[0] == "+") {
-        let secondNumber = currentNumber.slice(1).join("") * 1;
-        history.push("+");
-        history.push(`${secondNumber}`);
-        currentNumber.length = 0;
-        let result = firstNumber + secondNumber;
-        currentNumber.push(result.toFixed(20).toString().slice(0, 20)); 
-        history.push("=");
-      }
-  
-      if (currentNumber[0] == "-") {
-        let secondNumber = currentNumber.slice(1).join("") * 1;
-        history.push(`${currentNumber.join("")}`);
-        currentNumber.length = 0;
-        let result = firstNumber - secondNumber;
-        currentNumber.push(result.toFixed(20).toString().slice(0, 20)); 
-        history.push("=");
-      }
-  
-      if (currentNumber[0] == "X") {
-        aftersign = currentNumber.splice(0, 1)[0];
-        let secondNumber = currentNumber.join("") * 1;
-        history.push(`${aftersign}`);
-        history.push(`${secondNumber}`);
-        currentNumber.length = 0;
-        let result = firstNumber * secondNumber;
-        currentNumber.push(result.toFixed(20).toString().slice(0, 20));
-        history.push("=");
-      }
-  
-      if (currentNumber[0] == "/") {
-        aftersign = currentNumber.splice(0, 1)[0];
-        let secondNumber = currentNumber.join("") * 1;
-        history.push(`${aftersign}`);
-        history.push(`${secondNumber}`);
-        currentNumber.length = 0;
-        let result = firstNumber / secondNumber;
-        currentNumber.push(result.toFixed(20).toString().slice(0, 20));
-        history.push("=");
-      }
-  
-      displayHistory.textContent = history.join("");
-      display.textContent = currentNumber.join("");
-    }
-  }
-  
+  resultCalculated= true;
+  if (currentNumber[0] == "/" && currentNumber[1] == 0) {
+    history.length = 0;
+    currentNumber.length = 0;
+    displayHistory.textContent = history;
+    display.textContent = "Error!";
+  } else {
+    let firstNumber = history[0] * 1;
 
+    if (currentNumber[0] == "+") {
+      let secondNumber = currentNumber.slice(1).join("") * 1;
+      history.push("+");
+      history.push(`${secondNumber}`);
+      currentNumber.length = 0;
+      let result = firstNumber + secondNumber;
+      if(result.length>=20){
+        currentNumber.push(result.toFixed(20).toString().slice(0, 20));}
+        else{
+          currentNumber.push(result)
+        }
+      history.push("=");
+    }
+
+    if (currentNumber[0] == "-") {
+      let secondNumber = currentNumber.slice(1).join("") * 1;
+      history.push(`${currentNumber.join("")}`);
+      currentNumber.length = 0;
+      let result = firstNumber - secondNumber;
+      if(result.length>=20){
+        currentNumber.push(result.toFixed(20).toString().slice(0, 20));}
+        else{
+          currentNumber.push(result)
+        }
+      history.push("=");
+    }
+
+    if (currentNumber[0] == "X") {
+      aftersign = currentNumber.splice(0, 1)[0];
+      let secondNumber = currentNumber.join("") * 1;
+      history.push(`${aftersign}`);
+      history.push(`${secondNumber}`);
+      currentNumber.length = 0;
+      let result = firstNumber * secondNumber;
+      if(result.length>=20){
+      currentNumber.push(result.toFixed(20).toString().slice(0, 20));}
+      else{
+        currentNumber.push(result)
+      }
+      history.push("=");
+    }
+
+    if (currentNumber[0] == "/") {
+      aftersign = currentNumber.splice(0, 1)[0];
+      let secondNumber = currentNumber.join("") * 1;
+      history.push(`${aftersign}`);
+      history.push(`${secondNumber}`);
+      currentNumber.length = 0;
+      let result = firstNumber / secondNumber;
+      if(result.length>=20){
+        currentNumber.push(result.toFixed(20).toString().slice(0, 20));}
+        else{
+          currentNumber.push(result)
+        }
+      history.push("=");
+    }
+
+    displayHistory.textContent = history.join("");
+    display.textContent = currentNumber.join("");
+  }
+}
