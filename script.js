@@ -3,138 +3,203 @@ let currentNumber =[]
 let history=[]
 let display = document.querySelector('.display')
 let displayHistory = document.querySelector('.displayHistory')
+const operators = ['.', 'X', '-', '+', '/'];
+let resultCalculated = false; 
 
-let zero = document.querySelector('.zero')
-zero.addEventListener('click',()=>{
-    currentNumber.push(0);
-    display.textContent= currentNumber.join('')})
-
-let one = document.querySelector('.one')
-one.addEventListener('click',()=>{
-    currentNumber.push(1);
-    display.textContent= currentNumber.join('')})
-
-let two = document.querySelector('.two')
-two.addEventListener('click',()=>{
-    currentNumber.push(2);
-    display.textContent= currentNumber.join('')})
-
-let three = document.querySelector('.three')
-three.addEventListener('click',()=>{
-    currentNumber.push(3);
-    display.textContent= currentNumber.join('')})
-
-let four =document.querySelector('.four')
-four.addEventListener('click',()=>{
-    currentNumber.push(4);
-    display.textContent= currentNumber.join('')})
-
-let five =document.querySelector('.five')
-five.addEventListener('click',()=>{
-    currentNumber.push(5);
-    display.textContent= currentNumber.join('')})
-
-let six = document.querySelector('.six')
-six.addEventListener('click',()=>{
-    currentNumber.push(6);
-    display.textContent= currentNumber.join('')})
-let seven = document.querySelector('.seven')
-seven.addEventListener('click',()=>{
-    currentNumber.push(7);
-    display.textContent= currentNumber.join('')})
-
-let eight = document.querySelector('.eight')
-eight.addEventListener('click',()=>{
-    currentNumber.push(8);
-    display.textContent= currentNumber.join('')})
-
-let nine = document.querySelector('.nine')
-nine.addEventListener('click',()=>{
-    currentNumber.push(9);
-    display.textContent= currentNumber.join('')})
-
-let plus = document.querySelector('.plus')
-plus.addEventListener('click',()=>{
-     if(currentNumber.length!=0){
-    history.push(currentNumber.join(''))
-    currentNumber.length=0
-    currentNumber.push('+');}
-    displayHistory.textContent = history.join('')
-    display.textContent= currentNumber.join('')})
-let minus= document.querySelector('.minus')
-minus.addEventListener('click',()=>{
-    currentNumber.push('-');
-    display.textContent= currentNumber.join('')})
-
-let multiplier = document.querySelector('.multiplier')
-multiplier.addEventListener('click',()=>{
-    if(currentNumber.length!=0){
-        history.push(currentNumber.join(''))
-        currentNumber.length=0
-        currentNumber.push('X');}
-    displayHistory.textContent = history.join('')
-    display.textContent= currentNumber.join('')})
-let divisor = document.querySelector('.divisor')
-divisor.addEventListener('click',()=>{
-    if(currentNumber.length!=0){
-        history.push(currentNumber.join(''))
-        currentNumber.length=0
-        currentNumber.push('/');}
-    displayHistory.textContent = history.join('')
-    display.textContent= currentNumber.join('')})
-
-let dot = document.querySelector('.dot')
-dot.addEventListener('click',()=>{
-    if(currentNumber!=0){
-    currentNumber.push('.')
-    display.textContent= currentNumber.join('')}
-})
-let equals = document.querySelector('.equals')
-equals.addEventListener('click',()=>{operate(history,currentNumber)})
- 
-let calcNumber=0;
-function operate(history,currentNumber){
-   let firstNumber= history[calcNumber]*1
-    
-   if(currentNumber[0]=='+'){
-    let secondNumber= currentNumber.join('')*1 
-    history.push('+')
-    history.push(`${secondNumber}`)
-    currentNumber.length=0
-    currentNumber.push(`${firstNumber+secondNumber}`)
-   displayHistory.textContent= history.join('')
-   display.textContent=currentNumber}
-
-   if(currentNumber[0]=='-'){
-    let secondNumber= currentNumber.join('')*1 
-    history.push(`${secondNumber}`)
-    currentNumber.length=0
-    currentNumber.push(`${firstNumber-secondNumber}`)
-   displayHistory.textContent= history.join('')
-   display.textContent=currentNumber}
-
-   if(currentNumber[0]=='X'){
-    aftersign = currentNumber.splice(0,1)[0];
-    let secondNumber= currentNumber.join('')*1 
-    history.push(`${aftersign}`)
-    history.push(`${secondNumber}`)
-    currentNumber.length=0
-    currentNumber.push(`${(firstNumber*secondNumber)}`)
-   displayHistory.textContent= history.join('')
-   display.textContent=currentNumber}
-
-   if(currentNumber[0]=='/'){
-    aftersign = currentNumber.splice(0,1)[0];
-    let secondNumber= currentNumber.join('')*1 
-    history.push(`${aftersign}`)
-    history.push(`${secondNumber}`)
-    currentNumber.length=0
-    currentNumber.push(`${firstNumber/secondNumber}`)
-   displayHistory.textContent= history.join('')
-   display.textContent=currentNumber}
-  calcNumber+=3;
-
+for(let i=0;i<=9;i++){
+    let number=document.querySelector(`.number${i}`)
+    number.addEventListener('click',()=>{
+        if(currentNumber.length<20 && !resultCalculated  ){
+        currentNumber.push(i)
+        display.textContent=currentNumber.join('')}});
 }
 
+let plus = document.querySelector('.plus')
+plus.addEventListener('click',()=>{prepareOperation('+')})
+    
+let minus= document.querySelector('.minus')
+minus.addEventListener('click',()=>{
+    prepareOperation('-');
+    if(currentNumber.length==0){
+        currentNumber.push('-')
+        display.textContent=currentNumber.join('')
+    }
+   })
 
+
+let multiplier = document.querySelector('.multiplier')
+multiplier.addEventListener('click',()=>{prepareOperation('X')}
+)
+
+let divisor = document.querySelector('.divisor')
+divisor.addEventListener('click',()=>{prepareOperation('/')})
+
+function prepareOperation(sign){
+    if (!operators.includes( currentNumber[currentNumber.length - 1])) {
+    if(currentNumber.length!=0||history.length!=0){
+        history.length=0;
+        history.push(currentNumber.join(''))
+        currentNumber.length=0
+        currentNumber.push(`${sign}`)
+    }}
+    displayHistory.textContent = history.join('')
+    display.textContent= currentNumber.join('')}
+
+let dot = document.querySelector('.dot')
+dot.addEventListener('click', () => {
+    if (!operators.includes( currentNumber[currentNumber.length - 1])) {
+      currentNumber.push('.');
+      display.textContent = currentNumber.join('');
+    }
+  })
+let equals = document.querySelector('.equals')
+equals.addEventListener('click',()=>{operate(history,currentNumber)})
+
+let backSpace = document.querySelector('.back')
+backSpace.addEventListener('click',()=>{
+  if (operators.includes( history[1])) {
+    history.length=0
+    displayHistory.textContent=history}
+    currentNumber.pop();
+    display.textContent=currentNumber.join('')
+    resultCalculated = false;})
+
+let clear = document.querySelector('.AC')
+clear.addEventListener('click',()=>{
+    history.length=0;
+    currentNumber.length=0;
+    display.textContent=currentNumber.join('');
+    displayHistory.textContent=history.join('');
+    resultCalculated = false;
+})
+ 
+document.addEventListener('keydown', event => {
+  const key = event.key;
+  switch (key) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      const number = document.querySelector(`.number${key}`);
+      if (number) {
+        number.click();
+      }
+      break;
+    case '.':
+      const dot = document.querySelector('.dot');
+      if (dot) {
+        dot.click();
+      }
+      break;
+    case '+':
+      const plus = document.querySelector('.plus');
+      if (plus) {
+        plus.click();
+      }
+      break;
+    case '-':
+      const minus = document.querySelector('.minus');
+      if (minus) {
+        minus.click();
+      }
+      break;
+    case '*':
+    case 'x':
+      const multiplier = document.querySelector('.multiplier');
+      if (multiplier) {
+        multiplier.click();
+      }
+      break;
+    case '/':
+      const divisor = document.querySelector('.divisor');
+      if (divisor) {
+        divisor.click();
+      }
+      break;
+    case '=':
+    case 'Enter':
+      const equals = document.querySelector('.equals');
+      if (equals) {
+        equals.click();
+      }
+      break;
+    case 'Backspace':
+      const backSpace = document.querySelector('.back');
+      if (backSpace) {
+        backSpace.click();
+      }
+      break;
+    case 'Escape':
+      const clear = document.querySelector('.AC');
+      if (clear) {
+        clear.click();
+      }
+      break;
+    default:
+      break;
+  }
+});
+
+function operate(history, currentNumber) {
+  resultCalculated = true;
+    if (currentNumber[0] == "/" && currentNumber[1] == 0) {
+      history.length = 0;
+      currentNumber.length = 0;
+      displayHistory.textContent = history;
+      display.textContent = "Error!";
+    } else {
+      let firstNumber = history[0] * 1;
+  
+      if (currentNumber[0] == "+") {
+        let secondNumber = currentNumber.slice(1).join("") * 1;
+        history.push("+");
+        history.push(`${secondNumber}`);
+        currentNumber.length = 0;
+        let result = firstNumber + secondNumber;
+        currentNumber.push(result.toFixed(20).toString().slice(0, 20)); 
+        history.push("=");
+      }
+  
+      if (currentNumber[0] == "-") {
+        let secondNumber = currentNumber.slice(1).join("") * 1;
+        history.push(`${currentNumber.join("")}`);
+        currentNumber.length = 0;
+        let result = firstNumber - secondNumber;
+        currentNumber.push(result.toFixed(20).toString().slice(0, 20)); 
+        history.push("=");
+      }
+  
+      if (currentNumber[0] == "X") {
+        aftersign = currentNumber.splice(0, 1)[0];
+        let secondNumber = currentNumber.join("") * 1;
+        history.push(`${aftersign}`);
+        history.push(`${secondNumber}`);
+        currentNumber.length = 0;
+        let result = firstNumber * secondNumber;
+        currentNumber.push(result.toFixed(20).toString().slice(0, 20));
+        history.push("=");
+      }
+  
+      if (currentNumber[0] == "/") {
+        aftersign = currentNumber.splice(0, 1)[0];
+        let secondNumber = currentNumber.join("") * 1;
+        history.push(`${aftersign}`);
+        history.push(`${secondNumber}`);
+        currentNumber.length = 0;
+        let result = firstNumber / secondNumber;
+        currentNumber.push(result.toFixed(20).toString().slice(0, 20));
+        history.push("=");
+      }
+  
+      displayHistory.textContent = history.join("");
+      display.textContent = currentNumber.join("");
+    }
+  }
+  
 
