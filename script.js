@@ -41,13 +41,14 @@ function prepareOperation(sign){
         history.push(currentNumber.join(''))
         currentNumber.length=0
         currentNumber.push(`${sign}`)
+        resultCalculated=false;
     }}
     displayHistory.textContent = history.join('')
     display.textContent= currentNumber.join('')}
 
 let dot = document.querySelector('.dot')
 dot.addEventListener('click', () => {
-    if (!operators.includes( currentNumber[currentNumber.length - 1])) {
+    if (!operators.includes( currentNumber[currentNumber.length - 1]) && !resultCalculated) {
       currentNumber.push('.');
       display.textContent = currentNumber.join('');
     }
